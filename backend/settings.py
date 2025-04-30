@@ -27,6 +27,7 @@ SECRET_KEY = 'django-insecure-)fro6!+d!x)!i(g(p2e+*sb#(0wm!ubh_qdte^&&qx4%@h@k#*
 DEBUG = True
 
 ALLOWED_HOSTS = []
+AUTH_USER_MODEL = 'base.Myuser'
 
 
 # Application definition
@@ -66,6 +67,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 ROOT_URLCONF = 'backend.urls'
+
 
 TEMPLATES = [
     {
@@ -131,7 +133,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
-
+# Media files (user-uploaded content)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
