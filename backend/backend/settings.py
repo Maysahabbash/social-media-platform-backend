@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'base',
     'corsheaders',
+    'rest_framework_simplejwt',
     'rest_framework'
 
 ]
@@ -145,10 +146,10 @@ SESSION_COOKIE_SECURE = True  # True in production
 CSRF_COOKIE_SECURE = True     # True in production
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',  # Or SessionAuthentication
-    ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ]
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+SIMPLE_JWT = {
+    "USER_ID_FIELD" : 'username'
 }
