@@ -1,4 +1,5 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .models import MyUser
 from .serializers import MyUserProfileSerializer
@@ -7,6 +8,7 @@ from .serializers import MyUserProfileSerializer
 # Create your views here.
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_user_profile_data(request, pk):
     try:
         try:
@@ -16,11 +18,6 @@ def get_user_profile_data(request, pk):
         
         serializer = MyUserProfileSerializer(user, many=False)
 
-        following = False
-
-        if request.user in user.followers.all():
-            following = True
-
-        return Response({**serializer.data, 'is_our_profile': request.user.username == user.username, 'following':following})
+        return Response(serializer.data)
     except:
         return Response({'error':'error getting user data'})
