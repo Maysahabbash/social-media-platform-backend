@@ -7,40 +7,51 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from rest_framework.response import Response
 
 class CustomTokenObtainPairView(TokenObtainPairView):
+
     def post(self, request, *args, **kwargs):
-        response = super().post(request, *args, **kwargs)
-        tokens = response.data
+        try:
+            response = super().post(request, *args, **kwargs)
+            
+            # Check if parent class returned valid tokens
+            if response.status_code != 200:
+                return response
 
-        access_token = tokens ['access']
-        refresh_token = tokens['refresh']
+            tokens = response.data
 
-        res = Response()
-        res = {"success":True}
-        res.set_cookie(
-           key = 'access_token',
-           value=access_token,
-           httponly = True,
-           secure = True,
-           samesite='None',
-           path='/'
-
-        )
-        res.set_cookie(
-           key = 'refresh_token',
-           value=refresh_token,
-           httponly = True,
-           secure = True,
-           samesite='None',
-           path='/'
-
-        )
-        return res
-
-
-
-# Create your views here.
+            # Create response object FIRST
+            res = Response({
+                "success": True,
+                "message": "Login successful"
+            })
+            
+            # Set cookies on the response object
+            res.set_cookie(
+                key='access_token',
+                value=tokens['access'],
+                httponly=True,
+                secure=True,
+                samesite='None',
+                path='/'
+            )
+            
+            res.set_cookie(
+                key='refresh_token',
+                value=tokens['refresh'],
+                httponly=True,
+                secure=True,
+                samesite='None',
+                path='/'
+            )
+            
+            return res  # Return the actual response object
+            
+        except Exception as e:
+            # Log the error for debugging
+            print(f"Error in token obtain: {str(e)}")
+            return Response({'success': False, 'error': str(e)}, status=400)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
