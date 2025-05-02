@@ -52,6 +52,42 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             # Log the error for debugging
             print(f"Error in token obtain: {str(e)}")
             return Response({'success': False, 'error': str(e)}, status=400)
+        
+class CustomTokenTokenRefreshView(TokenRefreshView):
+
+      def post(self, request, *args, **kwargs):
+        
+        try:
+          
+          refresh_token = request.COOkIES.get('refresh_token')
+          request.data ['refresh'] = refresh_token
+
+          response = super().post(request, *args, **kwargs)
+          tokens = response.data
+          access_token = tokens['access']
+          res = Response()
+          res = Response({
+                "success": True,
+                "message": "Login successful"
+            })
+            
+            # Set cookies on the response object
+          res.set_cookie(
+                key='access_token',
+                value=tokens['access'],
+                httponly=True,
+                secure=True,
+                samesite='None',
+                path='/'
+            )
+          return res
+        except :
+         return Response ({'success':False})
+
+
+        
+
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
