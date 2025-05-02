@@ -137,19 +137,14 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL= 'base.MyUser'
-CORS_ALLOW_CREDENTIALS = True  # Critical for credentials
 
-# Cookie settings (development)
-SESSION_COOKIE_SAMESITE = 'None'
-CSRF_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_SECURE = True  # True in production
-CSRF_COOKIE_SECURE = True     # True in production
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'base.authenticate.CookiesAuthentication',  # Your custom class
+    ]
 }
+
 SIMPLE_JWT = {
     "USER_ID_FIELD" : 'username'
 }
