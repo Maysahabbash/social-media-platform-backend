@@ -132,7 +132,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
 ]
 
-CORS_ALLOW_CREDENTIALS: True
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -148,3 +147,10 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     "USER_ID_FIELD" : 'username'
 }
+
+CORS_ALLOW_CREDENTIALS = True  # Critical for cookies/auth
+CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
+# Required for CSRF/cookie auth
+CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'Lax'

@@ -7,6 +7,8 @@ from .views import get_user_profile_data,CustomTokenObtainPairView, CustomTokenT
 
 from rest_framework_simplejwt.views import (
     
+     TokenObtainPairView,
+
     TokenRefreshView,
 )
 
