@@ -2,7 +2,7 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import get_user_profile_data,CustomTokenObtainPairView, CustomTokenTokenRefreshView, register, auhtenticated, toggleFollow
+from .views import get_user_profile_data,CustomTokenObtainPairView, CustomTokenTokenRefreshView, register, auhtenticated, toggleFollow, get_users_posts, toggleLike, create_post, get_posts
 
 
 from rest_framework_simplejwt.views import (
@@ -19,6 +19,12 @@ urlpatterns = [
     path('register/', register),
     path ('auhtenticated/', auhtenticated),
     path('toggle_follow/', toggleFollow ),
+    path('posts/<str:pk>/', get_users_posts),
+    path('toggleLike/', toggleLike),
+    path('create_post/', create_post),
+    path('get_posts/',get_posts),
+
+
 
 
 
