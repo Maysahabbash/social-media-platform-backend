@@ -3,7 +3,7 @@ from .models import MyUser
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
-    class meta:
+    class Meta:
         model = MyUser
         fields = ['username','email','first_name', 'last_name', 'password']
     
@@ -16,11 +16,10 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             
         )
 
-        user.set_passwor(validated_data['password'])
+        user.set_password(validated_data['password'])
         user.save()
         return user
 
-        return super().create(validated_data)
 
 class MyUserProfileSerializer(serializers.ModelSerializer):
     followers_count = serializers.SerializerMethodField()
