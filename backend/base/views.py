@@ -133,23 +133,22 @@ def get_user_profile_data(request, pk):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def toggleFollow(request): 
- try: 
-    try: 
-      my_user = MyUser.objects.get(username=request.user.username)
-      user_to_follow = MyUser.objects.get(username = request.data['username'])
-    except MyUser.DoesNotExist:
-             return Response({'error':'users does not exist'})
-    
-    if my_user in user_to_follow.followers.all():
-        user_to_follow.followers.remove(my_user)
-        return Response({'now_following':False})
-    else:
-        user_to_follow.followers.add(my_user)
- 
-        return Response({'now_following':True})
- except:
-            return Response({'error':'error following user'})
+def toggleFollow(request):
+    try:
+        try:
+            my_user = MyUser.objects.get(username=request.user.username)
+            user_to_follow = MyUser.objects.get(username=request.data['username'])
+        except MyUser.DoesNotExist:
+            return Response({'error':'users does not exist'})
+        
+        if my_user in user_to_follow.followers.all():
+            user_to_follow.followers.remove(my_user)
+            return Response({'now_following':False})
+        else:
+            user_to_follow.followers.add(my_user)
+            return Response({'now_following':True})
+    except:
+        return Response({'error':'error following user'})    
 
     
 

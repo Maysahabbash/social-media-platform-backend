@@ -18,7 +18,7 @@ urlpatterns = [
     path('token/refresh/', CustomTokenTokenRefreshView.as_view(), name='token_refresh'),
     path('register/', register),
     path ('auhtenticated/', auhtenticated),
-    path ('toggle_follow', toggleFollow)
+    path('toggle_follow/', toggleFollow ),
 
 
 
