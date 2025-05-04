@@ -2,14 +2,13 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import get_user_profile_data,CustomTokenObtainPairView, CustomTokenTokenRefreshView, register, auhtenticated, toggleFollow, get_users_posts, toggleLike, create_post, get_posts
+from .views import get_user_profile_data,CustomTokenObtainPairView, CustomTokenTokenRefreshView, register, auhtenticated, toggleFollow, get_users_posts, toggleLike, create_post, get_posts, search_users
 
 
 from rest_framework_simplejwt.views import (
     
      TokenObtainPairView,
-
-    TokenRefreshView,
+      TokenRefreshView,
 )
 
 urlpatterns = [
@@ -23,6 +22,7 @@ urlpatterns = [
     path('toggleLike/', toggleLike),
     path('create_post/', create_post),
     path('get_posts/',get_posts),
+    path('search/', search_users)
 
 
 

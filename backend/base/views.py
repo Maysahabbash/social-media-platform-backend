@@ -3,11 +3,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .models import MyUser
 from rest_framework.pagination import PageNumberPagination
-from .serializers import MyUserProfileSerializer, PostSerializer, UserRegisterSerializer, Post
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
+from .serializers import MyUserProfileSerializer, PostSerializer, UserRegisterSerializer, Post, UserSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -262,6 +259,13 @@ def create_post(request):
         return Response({"error":"error creating post"})
     
    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def search_users(request):
+    query = request.query_params.get('query', '')
+    users = MyUser.objects.filter(username__icontains=query)
+    serializer = UserSerializer(users, many=True)
+    return Response(serializer.data)
 
 
     
