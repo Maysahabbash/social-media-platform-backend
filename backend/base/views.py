@@ -1,15 +1,26 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .models import MyUser
+# my tools for creating API endpoints and security
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
+
+
+
 from rest_framework.pagination import PageNumberPagination
-from .serializers import MyUserProfileSerializer, PostSerializer, UserRegisterSerializer, Post, UserSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
+from .models import MyUser, Post
+from .serializers import MyUserProfileSerializer, UserRegisterSerializer, PostSerializer, UserSerializer
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def auhtenticated(request):
-    return Response('auhtenticated')
+def authenticated(request):
+    return Response({'message': 'User is authenticated'})
+    
 
 @api_view(['POST'])
 def register(request):
@@ -18,10 +29,12 @@ def register(request):
         serializer.save()
         return Response(serializer.data)
     return Response(serializer.errors)
+        #Creates new user account
+        #Validates and saves new users
+        #Uses special form (serializer) for data checking
 
 
 
-    
 class CustomTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
         
@@ -71,27 +84,29 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             return res
         
         except:
-            return Response({'success':False})        
-class CustomTokenTokenRefreshView(TokenRefreshView):
+            return Response({'success':False})
+         # Creates login tokens (access + refresh)
+        # Saves tokens in secure cookies
 
-      def post(self, request, *args, **kwargs):
-        
-        try:
-          
-          refresh_token = request.COOKIES.get('refresh_token')
-          request.data ['refresh'] = refresh_token
-
-          response = super().post(request, *args, **kwargs)
-          tokens = response.data
-          access_token = tokens['access']
-          res = Response()
-          res.data = {
-              "success:True"
-          }
-        
+class CustomTokenRefreshView(TokenRefreshView):
+    def post(self, request, *args, **kwargs):
             
-            # Set cookies on the response object
-          res.set_cookie(
+        try:
+            refresh_token = request.COOKIES.get('refresh_token')
+            request.data['refresh'] = refresh_token
+
+            response = super().post(request, *args, **kwargs)
+            tokens = response.data
+
+            access_token = tokens['access']
+            
+            res = Response()
+
+            res.data = {
+                "success":True
+            }
+
+            res.set_cookie(
                 key='access_token',
                 value=access_token,
                 httponly=True,
@@ -99,15 +114,11 @@ class CustomTokenTokenRefreshView(TokenRefreshView):
                 samesite='None',
                 path='/'
             )
-          return res
-        except :
-         return Response ({'success':False})
 
-
-        
-
-
-
+            return res
+        except:
+            return Response({'success':False})
+   
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_user_profile_data(request, pk):
@@ -127,8 +138,11 @@ def get_user_profile_data(request, pk):
         return Response({**serializer.data, 'is_our_profile': request.user.username == user.username, 'following':following})
     except:
         return Response({'error':'error getting user data'})
-    
+       # Shows user profile + follow status
+       #Displays user info + followers count
+       #Checks if you follow this user
 
+ 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def toggleFollow(request):
@@ -147,11 +161,16 @@ def toggleFollow(request):
             return Response({'now_following':True})
     except:
         return Response({'error':'error following user'})
+        # Follow/unfollow users
+        #Adds/removes users from followers list
+        #Returns new follow status
+
 
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_users_posts(request, pk):
+    
     try:
         user = MyUser.objects.get(username=pk)
         my_user = MyUser.objects.get(username=request.user.username)
@@ -174,10 +193,7 @@ def get_users_posts(request, pk):
         data.append(new_post)
 
     return Response(data)
-  
-
-
-
+    
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def toggleLike(request):
@@ -201,39 +217,15 @@ def toggleLike(request):
     except:
         return Response({'error':'failed to like post'})
     
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_posts(request):
+#Tracks who liked each post
+#Updates like count instantly
+# Like/unlike posts
 
-    try:
-        my_user = MyUser.objects.get(username=request.user.username)
-    except MyUser.DoesNotExist:
-        return Response({'error':'user does not exist'})
 
-    posts = Post.objects.all().order_by('-created_at')
 
-    paginator = PageNumberPagination()
-    paginator.page_size = 10
 
-    result_page = paginator.paginate_queryset(posts, request)
-    serializer = PostSerializer(result_page, many=True)
 
-    data = []
 
-    for post in serializer.data:
-        new_post = {}
-
-        if my_user.username in post['likes']:
-            new_post = {**post, 'liked':True}
-        else:
-            new_post = {**post, 'liked':False}
-        data.append(new_post)
-
-    return paginator.get_paginated_response(data)
-
-        
-
-    
     
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -258,7 +250,55 @@ def create_post(request):
     except:
         return Response({"error":"error creating post"})
     
-   
+
+
+    # Makes new post
+    #Saves post text with author info
+    #Uses authentication to verify user
+
+
+
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_posts(request):
+
+    try:
+        my_user = MyUser.objects.get(username=request.user.username)
+    except MyUser.DoesNotExist:
+        return Response({'error':'user does not exist'})
+#it first verify ur logged in and then gets ur details and then 
+
+    posts = Post.objects.all().order_by('-created_at')
+#it will fetch posts from database orders by newest first
+
+    paginator = PageNumberPagination()
+    paginator.page_size = 10
+#this is pagnator it creats a page system so that the user can see 10 posts at at time
+
+    result_page = paginator.paginate_queryset(posts, request)
+    serializer = PostSerializer(result_page, many=True)
+    #this post serilizer Makes the post  data readable for web
+
+
+    data = []
+
+    for post in serializer.data:
+        new_post = {}
+
+        if my_user.username in post['likes']:
+            new_post = {**post, 'liked':True}
+        else:
+            new_post = {**post, 'liked':False}
+        data.append(new_post)
+
+    return paginator.get_paginated_response(data)
+
+
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def search_users(request):
@@ -268,7 +308,9 @@ def search_users(request):
     return Response(serializer.data)
 
 
-    
+
+
+
 
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
@@ -289,6 +331,8 @@ def update_user_details(request):
     
     return Response({**serializer.errors, "success": False})
 
+
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def logout(request):
@@ -303,14 +347,9 @@ def logout(request):
     except:
         return Response({"success":False})
     
-        
 
+    # Removes login cookies
 
-        
-        
-
-
-    
 
 
     
