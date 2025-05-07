@@ -1,13 +1,13 @@
 
-# 🚀 Moments - Social Media Backend  🚀
+#  Moments - Social Media Backend  
 
 ![API Banner](https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExMXlnZ2g5YmozcDF3OHFkZHpsNHVibWlsOGg5dmptNHhmbzBuOHduNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZVik7pBtu9dNS/giphy.gif)
 
-## 📌 Project Description
+##  Project Description
 **Moments Backend** is the powerhouse behind your social media experience! Built with Django and Django REST Framework, it handles user authentication, post management, and real-time social interactions. Think of it as the "brain" that makes liking, following, and sharing possible!
 
 ----
-## 🛠️ Tech Stack
+##  Tech Stack
 
 - **Django**: Web framework
 - **Django REST Framework**: API toolkit
@@ -18,8 +18,8 @@
 
 ---
 
-## 🔗 Frontend Repository
-👉 **[Moments Frontend](https://git.generalassemb.ly/maysahabbash92/social-media-frontend.git)** 👈  
+## Frontend Repository
+ **[Moments Frontend](https://git.generalassemb.ly/maysahabbash92/social-media-frontend.git)** 
 *(Connect to the shiny React frontend here!)*
 
 ---
@@ -30,7 +30,7 @@
 
 
 
-## 🛣️ API Routing Table
+##  API Routing Table
 
 | Endpoint | Method | Description | Requires Auth |
 |----------|--------|-------------|---------------|
@@ -56,7 +56,7 @@
 
 
 
-## 📊 ERD Diagram
+## ERD Diagram
 
 
 
@@ -64,21 +64,21 @@
 
 ---
 
-## 🚀 Future Features (Icebox)
-- 📹 Stories: 24-hour ephemeral posts
-- 💬 Comments: Discuss posts with friends
-- 🔔 Notifications: Real-time activity alerts
-- 🌓 Dark Mode: Eye-friendly 
+##  Future Features (Icebox)
+- Stories: 24-hour ephemeral posts
+- Comments: Discuss posts with friends
+- Notifications: Real-time activity alerts
+- Dark Mode: Eye-friendly 
 
 
-## 📚 References 
+## References 
 
-### 🔐 Authentication
+###  Authentication
 - [JWT Official RFC](https://datatracker.ietf.org/doc/html/rfc7519)
 - [Django REST Framework JWT](https://django-rest-framework-simplejwt.readthedocs.io/)
 - [Secure JWT Best Practices](https://auth0.com/blog/a-look-at-the-latest-draft-for-jwt-bcp/)
 
-### 🐍 Django & DRF
+###  Django & DRF
 - [DRF Documentation](https://www.django-rest-framework.org/)
 - [Django ORM Optimization](https://docs.djangoproject.com/en/stable/topics/db/optimization/)
 - [DRF Serializers Deep Dive](https://www.django-rest-framework.org/api-guide/serializers/)
