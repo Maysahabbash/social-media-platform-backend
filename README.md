@@ -19,7 +19,7 @@
 ---
 
 ## Frontend Repository
- **[Moments Frontend](https://github.com/Maysahabbash/social-media-platform-front-end.git)** 
+ **[Moments Frontend](https://github.com/Maysahabbash/social-media-platform-frontend.git)** 
 
 ---
 
