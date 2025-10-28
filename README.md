@@ -20,7 +20,6 @@
 
 ## Frontend Repository
  **[Moments Frontend](https://git.generalassemb.ly/maysahabbash92/social-media-frontend.git)** 
-*(Connect to the shiny React frontend here!)*
 
 ---
 
